@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "502666478158",
+    "project_id": "e-commerce-58e15",
+    "storage_bucket": "e-commerce-58e15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502666478158:android:5ec336993a5c618c5bb91f",
+        "android_client_info": {
+          "package_name": "com.hamza.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAstP3_P3QjnhzHaa_Yv9DqWttHm14Vfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
