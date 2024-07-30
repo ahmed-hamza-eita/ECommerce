@@ -12,6 +12,5 @@
         </item> <!-- For making status bar content color dark -->
         <item name="android:windowLightNavigationBar">false
         </item>  <!-- For making Navigation bar content color dark -->
-
     </style>
 </resources>

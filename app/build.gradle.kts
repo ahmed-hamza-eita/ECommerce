@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,8 +47,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+        // Import the Firebase BoM
+        implementation(platform(libs.firebase.bom))
+        implementation(libs.firebase.analytics)
 
-    //splash screen
+
+        //splash screen
     implementation(libs.androidx.core.splashscreen)
 
 }
