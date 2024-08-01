@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     alias(libs.plugins.google.firebase.crashlytics)
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -49,14 +51,19 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-        // Import the Firebase BoM
-        implementation(platform(libs.firebase.bom))
-        implementation(libs.firebase.analytics)
+    // Import the Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 
 
-        //splash screen
+    //splash screen
     implementation(libs.androidx.core.splashscreen)
 
-    implementation (libs.reactivenetwork.rx2)
+    implementation(libs.reactivenetwork.rx2)
+
+    //navigation component
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.dynamic.features.fragment)
 
 }
