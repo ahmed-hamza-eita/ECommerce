@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
 
+    //data store
+    implementation(libs.androidx.datastore.preferences)
+
 }
