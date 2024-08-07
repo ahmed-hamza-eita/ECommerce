@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.enableEdgeToEdge
@@ -36,19 +37,21 @@ class MainActivity : AppCompatActivity() {
         // setContentView(R.layout.activity_main)
         checkUserLoggedIn()
         keepSplashScreenFor5Seconds()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
     }
 
     private fun checkUserLoggedIn() {
         lifecycleScope.launch(Main) {
             val isLoggedIn = userViewModel.isUserLoggedIn().first()
+            Log.d(TAG, "OnCreate: isLoggedIn: $isLoggedIn")
             if (isLoggedIn) {
                 setContentView(R.layout.activity_main)
             } else {
+              //  userViewModel.saveUserLoggedIn(true)
                 gotoAuthActivity()
             }
         }
@@ -97,5 +100,9 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }
