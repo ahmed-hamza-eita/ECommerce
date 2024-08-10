@@ -13,7 +13,7 @@ class UserViewModel(private val userPreferencesRepository: UserPreferencesReposi
     suspend fun isUserLoggedIn() = userPreferencesRepository.isUserLoggedIn()
 
     fun saveUserLoggedIn(isUserLoggedIn: Boolean) = viewModelScope.launch {
-        userPreferencesRepository.saveUserLoggedIn(isUserLoggedIn)
+        userPreferencesRepository.saveUserLoggedInState(isUserLoggedIn)
     }
 }
 

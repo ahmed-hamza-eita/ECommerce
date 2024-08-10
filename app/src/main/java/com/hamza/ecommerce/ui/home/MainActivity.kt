@@ -1,4 +1,4 @@
-package com.hamza.ecommerce
+package com.hamza.ecommerce.ui.home
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -13,9 +13,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.hamza.ecommerce.R
+import com.hamza.ecommerce.data.datasource.datastore.UserPreferencesDataStore
 import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
 import com.hamza.ecommerce.ui.auth.AuthActivity
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var splashScreen: SplashScreen
     private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserPreferencesRepositoryImpl(this@MainActivity))
+        UserViewModelFactory(UserPreferencesRepositoryImpl( UserPreferencesDataStore(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
