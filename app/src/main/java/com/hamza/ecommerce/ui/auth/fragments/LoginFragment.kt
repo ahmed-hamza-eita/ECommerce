@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.viewbinding.ViewBinding
+import com.hamza.ecommerce.data.datasource.datastore.UserPreferencesDataStore
 import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
 import com.hamza.ecommerce.databinding.FragmentLoginBinding
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
@@ -15,7 +16,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         get() = FragmentLoginBinding::inflate
 
     private val viewModel: LoginViewModel by lazy {
-        LoginViewModel(userPrefs = UserPreferencesRepositoryImpl(requireContext()))
+        LoginViewModel(userPrefs = UserPreferencesRepositoryImpl(UserPreferencesDataStore(requireContext())))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
