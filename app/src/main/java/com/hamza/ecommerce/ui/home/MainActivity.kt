@@ -17,32 +17,40 @@ import androidx.lifecycle.lifecycleScope
 import com.hamza.ecommerce.R
 import com.hamza.ecommerce.data.datasource.datastore.UserPreferencesDataStore
 import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
+import com.hamza.ecommerce.databinding.ActivityMainBinding
 import com.hamza.ecommerce.ui.auth.AuthActivity
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private lateinit var splashScreen: SplashScreen
     private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserPreferencesRepositoryImpl( UserPreferencesDataStore(this)))
+        UserViewModelFactory(UserPreferencesRepositoryImpl(UserPreferencesDataStore(this)))
     }
-
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // setContentView(R.layout.activity_main)
-        checkUserLoggedIn()
-        keepSplashScreenFor5Seconds()
+        ifUserLoggedIn()
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // checkUserLoggedIn()
+        //keepSplashScreenFor5Seconds()
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
 //            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
 //            insets
 //        }
+
     }
+
 
     private fun checkUserLoggedIn() {
         lifecycleScope.launch(Main) {
@@ -51,9 +59,17 @@ class MainActivity : AppCompatActivity() {
             if (isLoggedIn) {
                 setContentView(R.layout.activity_main)
             } else {
-              //  userViewModel.saveUserLoggedIn(true)
+                //  userViewModel.saveUserLoggedIn(true)
                 gotoAuthActivity()
             }
+        }
+    }
+
+    private fun ifUserLoggedIn() {
+        val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
+        if (!isLoggedIn) {
+            gotoAuthActivity()
+            return
         }
     }
 
