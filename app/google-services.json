@@ -12,7 +12,20 @@
           "package_name": "com.hamza.ecommerce"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "502666478158-qhc3f46m8j1k4kmqubak0mjdqn2qv3jb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hamza.ecommerce",
+            "certificate_hash": "82ec67dae50ff9d59c39522006c4a59196658f1d"
+          }
+        },
+        {
+          "client_id": "502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBAstP3_P3QjnhzHaa_Yv9DqWttHm14Vfo"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
