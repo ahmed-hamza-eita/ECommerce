@@ -14,6 +14,7 @@ import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
 import com.hamza.ecommerce.databinding.FragmentLoginBinding
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
+import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
 import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
 import com.hamza.ecommerce.utils.BindingFragment
 import com.hamza.ecommerce.utils.CrashlyticsUtils
@@ -27,16 +28,12 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         get() = FragmentLoginBinding::inflate
 
 
-    private val loginViewModel: LoginViewModel by lazy {
-        LoginViewModel(
-            userPrefs = UserPreferencesRepositoryImpl(
-                UserPreferencesDataStore(
-                    requireContext()
-                )
-            ), authRepository = FirebaseAuthRepositoryImpl()
+    private val loginViewModel: LoginViewModel by viewModels {
+        LoginViewModelFactory(
+            userPrefs = UserPreferencesRepositoryImpl(UserPreferencesDataStore(requireActivity())),
+            authRepository = FirebaseAuthRepositoryImpl()
         )
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +48,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         lifecycleScope.launch {
             loginViewModel.loginState.collect { loginState ->
                 Log.d(TAG, "initViewModel $loginState")
-                loginState?.let { resource ->
+                loginState.let { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             progressDialog.show()
