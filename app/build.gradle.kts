@@ -35,6 +35,15 @@ android {
                 "\"502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com\""
             )
         }
+        debug {
+            isMinifyEnabled = false
+            buildConfigField(
+                "String",
+                "clientServerId",
+                "\"502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com\""
+            )
+
+        }
     }
     buildFeatures {
         buildConfig = true
