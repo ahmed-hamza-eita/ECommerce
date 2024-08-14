@@ -1,5 +1,6 @@
 package com.hamza.ecommerce.utils;
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
+import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
 
 abstract class BindingFragment<out T : ViewBinding> : Fragment() {
 
@@ -22,6 +24,7 @@ abstract class BindingFragment<out T : ViewBinding> : Fragment() {
     var myView: View? = null
     var myActivity: FragmentActivity? = null
 
+    val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

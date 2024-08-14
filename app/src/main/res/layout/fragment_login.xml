@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:drawableStart="@drawable/ic_password"
+                android:drawableStart="@drawable/ic_lock"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:text="@={viewmodel.password}" />
@@ -67,6 +67,7 @@
                 android:id="@+id/btn_sign_in"
                 style="@style/PrimaryButtonStyle"
                 android:layout_marginTop="16dp"
+                android:onClickListener="@{() -> viewmodel.loginWithEmailAndPassword()}"
                 android:text="@string/sign_in" />
 
             <RelativeLayout
