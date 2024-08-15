@@ -28,8 +28,25 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
+        forEach {
+            it.buildConfigField(
+                "String",
+                "clientServerId",
+                "\"502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com\""
+            )
+        }
+        debug {
+            isMinifyEnabled = false
+            buildConfigField(
+                "String",
+                "clientServerId",
+                "\"502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com\""
+            )
+
+        }
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         dataBinding = true
     }
@@ -62,6 +79,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.play.services.auth)
 
 
     //splash screen
