@@ -66,6 +66,30 @@ class LoginViewModel(
         }
 
     }
+
+    fun loginWithGoogle(idToken: String) = viewModelScope.launch {
+        authRepository.loginWithGoogle(idToken).onEach { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    _loginState.emit(Resource.Loading())
+                }
+
+                is Resource.Success -> {
+                    _loginState.emit(Resource.Success(resource.data ?: "Empty user Id"))
+                }
+
+                is Resource.Error -> {
+                    _loginState.emit(
+                        Resource.Error(
+                            resource.exception ?: Exception("Unknown error")
+                        )
+                    )
+                }
+            }
+
+
+        }.launchIn(viewModelScope)
+    }
 }
 
 
