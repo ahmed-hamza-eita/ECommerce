@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ecommerce</string>
+    <string name="app_name" translatable="false">Ecommerce</string>
     <string name="auth_welcome_msg">Welcome to E-Commerce</string>
     <string name="sign_in_msg">Sign in to continue</string>
     <string name="enter_your_e_mail">Your Email</string>
@@ -16,4 +16,7 @@
     <string name="retry">Retry</string>
     <string name="google_sign_in_field_msg">Google sign in failed, please retry again later.</string>
     <string name="generic_err_msg">Error please try again later.</string>
+
+
+
 </resources>
