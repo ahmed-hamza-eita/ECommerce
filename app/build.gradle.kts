@@ -19,6 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -34,6 +35,23 @@ android {
                 "clientServerId",
                 "\"502666478158-mn3rqsjcj9mfidk7kn9d346443s8htmo.apps.googleusercontent.com\""
             )
+
+            it.resValue(
+                "string",
+                "facebook_app_id",
+                "\"${project.properties["FACEBOOK_APP_ID"]}\""
+            )
+            it.resValue(
+                "string",
+                "fb_login_protocol_scheme",
+                "\"${project.properties["FB_LOGIN_PROTOCOL_SCHEME"]}\""
+            )
+            it.resValue(
+                "string",
+                "facebook_client_token",
+                "\"${project.properties["FACEBOOK_CLIENT_TOKEN"]}\""
+            )
+
         }
         debug {
             isMinifyEnabled = false
@@ -97,5 +115,8 @@ dependencies {
 
     //coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    //facebook login
+    implementation(libs.facebook.android.sdk)
 
 }

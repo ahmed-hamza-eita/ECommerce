@@ -11,6 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
@@ -39,7 +45,8 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     override val bindingInflater: (LayoutInflater) -> ViewBinding
         get() = FragmentLoginBinding::inflate
 
-
+    private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
+    private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
     private val loginViewModel: LoginViewModel by viewModels {
         LoginViewModelFactory(
             userPrefs = UserPreferencesRepositoryImpl(UserPreferencesDataStore(requireActivity())),
@@ -62,6 +69,9 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         binding.apply {
             btnSignInWithGoogle.setOnClickListener {
                 loginWithGoogleRequest()
+            }
+            btnSignInWithFacebook.setOnClickListener {
+                loginWithFacebook()
             }
         }
     }
@@ -127,6 +137,51 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         }
     }
 
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        loginViewModel.loginWithGoogle(idToken)
+    }
+
+    private fun loginWithFacebook() {
+        if (isLoggedIn()) signOut()
+        loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                val token = result.accessToken.token
+                Log.d(TAG, "onSuccess: $token")
+                firebaseAuthWithFacebook(token)
+            }
+
+            override fun onCancel() {
+                // Handle login cancel
+            }
+
+            override fun onError(error: FacebookException) {
+                // Handle login error
+                val msg = error.message ?: getString(R.string.generic_err_msg)
+                Log.d(TAG, "onError: $msg")
+                view?.showSnakeBarError(msg)
+                logAuthIssueToCrashlytics(msg, "Facebook")
+            }
+        })
+        loginManager.logInWithReadPermissions(
+            this, callbackManager, listOf("email", "public_profile")
+        )
+    }
+
+    private fun firebaseAuthWithFacebook(token: String) {
+        loginViewModel.loginWithFacebook(token)
+    }
+
+    private fun isLoggedIn(): Boolean {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        return accessToken != null && !accessToken.isExpired
+    }
+
+    private fun signOut() {
+        loginManager.logOut()
+        Log.d(TAG, "signOut: ")
+    }
+
     private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUtils.sendCustomLogToCrashlytics<LoginException>(
             msg,
@@ -135,12 +190,8 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         )
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        loginViewModel.loginWithGoogle(idToken)
-    }
-
-
     companion object {
-        const val TAG = "LoginFragment"
+        private const val TAG = "LoginFragment"
+        private const val RC_SIGN_IN = 9001
     }
 }
