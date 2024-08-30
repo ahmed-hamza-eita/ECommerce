@@ -90,8 +90,33 @@ class LoginViewModel(
 
         }.launchIn(viewModelScope)
     }
-}
 
+
+    fun loginWithFacebook(idToken: String)= viewModelScope.launch {
+        authRepository.loginWithFacebook(idToken).onEach { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    _loginState.emit(Resource.Loading())
+                }
+
+                is Resource.Success -> {
+                    _loginState.emit(Resource.Success(resource.data ?: "Empty user Id"))
+                }
+
+                is Resource.Error -> {
+                    _loginState.emit(
+                        Resource.Error(
+                            resource.exception ?: Exception("Unknown error")
+                        )
+                    )
+                }
+            }
+
+
+        }.launchIn(viewModelScope)
+    }
+
+}
 
 class LoginViewModelFactory(
     private val userPrefs: UserPreferencesRepository,
