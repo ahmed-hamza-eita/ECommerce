@@ -8,4 +8,6 @@ interface FirebaseAuthRepository {
 
     suspend fun loginWithEmailAndPassword(email: String, password: String): Flow<Resource<String>>
     suspend fun loginWithGoogle(idToken: String): Flow<Resource<String>>
+    suspend fun loginWithFacebook(idToken: String): Flow<Resource<String>>
+    fun signOut()
 }
