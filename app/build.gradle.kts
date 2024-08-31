@@ -6,6 +6,8 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("com.google.protobuf") version "0.9.4" apply true
+    id ("kotlin-parcelize")
+
 }
 
 android {
