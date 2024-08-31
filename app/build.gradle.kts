@@ -119,4 +119,7 @@ dependencies {
     //facebook login
     implementation(libs.facebook.android.sdk)
 
+    //proto data store
+    implementation(libs.androidx.datastore)
+
 }
