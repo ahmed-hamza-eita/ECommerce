@@ -20,10 +20,11 @@ object DataStoreKeys {
     const val E_COMMERCE_PREFERENCES = "e_commerce_preferences"
     val IS_USER_LOGGED_IN = booleanPreferencesKey("is_user_logged_in")
     val USER_ID = stringPreferencesKey("user_id")
-    const val USER_DETAILS_PREFERENCES_PB = "user_details.pb"
+    const val USER_DETAILS_PREFERENCES_PB =
+        "user_details.pb"  //this name should be same as the proto file name plus .pb extension
 }
 
-val Context.appDataStore: DataStore<Preferences> by preferencesDataStore(name =  E_COMMERCE_PREFERENCES)
+val Context.appDataStore: DataStore<Preferences> by preferencesDataStore(name = E_COMMERCE_PREFERENCES)
 
 val Context.userDetailsDataStore by dataStore(
     fileName = USER_DETAILS_PREFERENCES_PB, serializer = UserDetailsPreferencesSerializer
