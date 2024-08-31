@@ -1,13 +1,18 @@
 package com.hamza.ecommerce.ui.auth.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepository
-import com.hamza.ecommerce.data.repository.user.UserPreferencesRepository
-import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
+import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
+import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
+import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
+import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
+import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
 import com.hamza.ecommerce.utils.isValidEmail
 import kotlinx.coroutines.Dispatchers.IO
@@ -23,7 +28,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val userPrefs: UserPreferencesRepository,
+    private val appPreferencesRepository: AppPreferenceRepository,
+    private val userPreferencesRepository: UserPreferenceRepository,
     private val authRepository: FirebaseAuthRepository
 ) : ViewModel() {
 
@@ -118,16 +124,20 @@ class LoginViewModel(
 
 }
 
-class LoginViewModelFactory(
-    private val userPrefs: UserPreferencesRepository,
-    private val authRepository: FirebaseAuthRepository
-) :
+class LoginViewModelFactory(private val context: Context) :
     ViewModelProvider.Factory {
+    private val appPreferencesRepository =
+        AppDataStoreRepositoryImpl(AppPreferencesDataSource(context))
+    private val userPreferencesRepository = UserPreferenceRepositoryImpl(context)
+    private val firebaseAuthRepository = FirebaseAuthRepositoryImpl()
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST") return LoginViewModel(userPrefs, authRepository) as T
+            @Suppress("UNCHECKED_CAST") return LoginViewModel(
+                appPreferencesRepository,
+                userPreferencesRepository,
+                firebaseAuthRepository
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-
