@@ -15,7 +15,6 @@ import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
 import com.hamza.ecommerce.domains.mappers.toUserDetailsPreferences
-import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
 import com.hamza.ecommerce.utils.isValidEmail
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -24,9 +23,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -74,7 +70,7 @@ class LoginViewModel(
                         _loginState.emit(Resource.Success(resource.data))
                     }
 
-                    is Resource.Error -> {
+                      else -> {
                         _loginState.emit(Resource.Error(Exception("Unknown error")))
                     }
                 }

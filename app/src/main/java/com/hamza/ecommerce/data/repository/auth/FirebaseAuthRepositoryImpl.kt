@@ -32,7 +32,8 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Loading())
 
                 //Auth
-                val authResult = withContext(IO) { loginAction() }
+              //  val authResult = withContext(IO) { loginAction() }
+                val authResult = loginAction()
                 val userId = authResult.user?.uid
                 if (userId == null) {
                     val msg = "Sign in UserID not found"
@@ -41,29 +42,32 @@ class FirebaseAuthRepositoryImpl(
                     return@flow
                 }
 
-                //get user details from fireStore
+                // Get user details from Firestore
                 val userDoc = firestore.collection("users").document(userId).get().await()
                 if (!userDoc.exists()) {
-                    val msg = "Logged in user not found in fireStore"
-                    logAuthIssueToCrashlytics(msg, provider.name)
-                    emit(Resource.Error(Exception(msg)))
-                    return@flow
-                }
-
-                // map user details to UserDetailsModel
-                val userDetails = userDoc.toObject(UserDetailsModel::class.java)
-                userDetails?.let {
+                    // First time login, store user data in Firestore
+                    val userDetails = UserDetailsModel(
+                        id = userId,
+                        email = authResult.user?.email ?: "",
+                        name = authResult.user?.displayName ?: "",
+                        createdAt = System.currentTimeMillis(),
+                        disabled = false,
+                        reviews = emptyList()
+                    )
+                    firestore.collection("users").document(userId).set(userDetails).await()
                     emit(Resource.Success(userDetails))
-                } ?: run {
-                    val msg = "Error mapping user details to UserDetailsModel, user id = $userId"
-                    logAuthIssueToCrashlytics(msg, provider.name)
-                    emit(Resource.Error(Exception(msg)))
+                } else {
+                    // Map user details to UserDetailsModel
+                    val userDetails = userDoc.toObject(UserDetailsModel::class.java)
+                    userDetails?.let {
+                        emit(Resource.Success(userDetails))
+                    } ?: run {
+                        val msg = "Error mapping user details to UserDetailsModel, user id = $userId"
+                        logAuthIssueToCrashlytics(msg, provider.name)
+                        emit(Resource.Error(Exception(msg)))
+                    }
                 }
-
             } catch (e: Exception) {
-                logAuthIssueToCrashlytics(
-                    e.message ?: "Unknown error from exception = ${e::class.java}", provider.name
-                )
                 emit(Resource.Error(e))
             }
         }
