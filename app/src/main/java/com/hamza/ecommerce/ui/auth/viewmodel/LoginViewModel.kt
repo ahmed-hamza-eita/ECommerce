@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.models.Resource
+import com.hamza.ecommerce.data.models.user.UserDetailsModel
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepository
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
-import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
+import com.hamza.ecommerce.domains.mappers.toUserDetailsPreferences
 import com.hamza.ecommerce.utils.isValidEmail
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -22,9 +23,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -33,7 +31,7 @@ class LoginViewModel(
     private val authRepository: FirebaseAuthRepository
 ) : ViewModel() {
 
-    private val _loginState = MutableSharedFlow<Resource<String>>()
+    private val _loginState = MutableSharedFlow<Resource<UserDetailsModel>>()
     val loginState = _loginState.asSharedFlow()
 
 
@@ -48,79 +46,52 @@ class LoginViewModel(
         val email = email.value
         val password = password.value
         if (isLoginValid.first()) {
-            authRepository.loginWithEmailAndPassword(email.trim(), password).onEach { resource ->
+            handleFlow { authRepository.loginWithEmailAndPassword(email, password) }
+        } else {
+            _loginState.emit(Resource.Error(Exception("Invalid email or password")))
+        }
+    }
+
+    fun loginWithGoogle(idToken: String) = handleFlow { authRepository.loginWithGoogle(idToken) }
+
+    fun loginWithFacebook(idToken: String) =
+        handleFlow { authRepository.loginWithFacebook(idToken) }
+
+    private fun handleFlow(performFlow: suspend () -> Flow<Resource<UserDetailsModel>>) =
+        viewModelScope.launch(IO) {
+            performFlow().collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _loginState.emit(Resource.Loading())
                     }
 
-
                     is Resource.Success -> {
-                        _loginState.emit(Resource.Success(resource.data ?: "Empty user Id"))
+                        savePreferenceData(resource.data!!)
+                        _loginState.emit(Resource.Success(resource.data))
                     }
 
-                    is Resource.Error -> {
-                        _loginState.emit(
-                            Resource.Error(resource.exception ?: Exception("Unknown error"))
-                        )
+                    else -> {
+                        _loginState.emit(Resource.Error(Exception(resource.exception?.message)))
                     }
                 }
-            }.launchIn(viewModelScope)
+            }
 
-        } else {
-            _loginState.emit(Resource.Error(Exception("Invalid Email or Password")))
         }
 
+
+    private suspend fun savePreferenceData(userDetailsModel: UserDetailsModel) {
+        appPreferencesRepository.saveLoginState(true)
+        userPreferencesRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences())
     }
 
-    fun loginWithGoogle(idToken: String) = viewModelScope.launch {
-        authRepository.loginWithGoogle(idToken).onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _loginState.emit(Resource.Loading())
-                }
-
-                is Resource.Success -> {
-                    _loginState.emit(Resource.Success(resource.data ?: "Empty user Id"))
-                }
-
-                is Resource.Error -> {
-                    _loginState.emit(
-                        Resource.Error(
-                            resource.exception ?: Exception("Unknown error")
-                        )
-                    )
-                }
-            }
-
-
-        }.launchIn(viewModelScope)
+    fun signOut() {
+        authRepository.signOut()
     }
 
-
-    fun loginWithFacebook(idToken: String)= viewModelScope.launch {
-        authRepository.loginWithFacebook(idToken).onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _loginState.emit(Resource.Loading())
-                }
-
-                is Resource.Success -> {
-                    _loginState.emit(Resource.Success(resource.data ?: "Empty user Id"))
-                }
-
-                is Resource.Error -> {
-                    _loginState.emit(
-                        Resource.Error(
-                            resource.exception ?: Exception("Unknown error")
-                        )
-                    )
-                }
-            }
-
-
-        }.launchIn(viewModelScope)
+    companion object {
+        const val TAG = "LoginViewModel"
     }
+
 
 }
 

@@ -85,12 +85,16 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
                         is Resource.Success -> {
                             progressDialog.dismiss()
-                            requireContext().showToast(resource.data.toString())
+                            //requireContext().showToast(resource.data.toString())
+                            requireContext().showToast("Login Successful")
+                            goToHome()
                         }
 
                         is Resource.Error -> {
                             progressDialog.dismiss()
-                            requireContext().showToast(resource.exception?.message.toString())
+                            view?.showSnakeBarError(
+                                resource.exception?.message ?: getString(R.string.generic_err_msg)
+                            )
                         }
                     }
 

@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        initViewModel()
         // checkUserLoggedIn()
         //keepSplashScreenFor5Seconds()
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -81,6 +83,18 @@ class MainActivity : AppCompatActivity() {
             android.R.anim.fade_out
         )
         startActivity(intent, option.toBundle())
+    }
+
+    private fun initViewModel() {
+        lifecycleScope.launch {
+            val userDetails = runBlocking { userViewModel.getUserDetails().first() }
+            Log.d(TAG, "initViewModel: user details ${userDetails.email}")
+
+            userViewModel.userDetailsState.collect {
+                Log.d(TAG, "initViewModel: user details updated ${it?.email}")
+            }
+
+        }
     }
 
     private fun initSplashScreen() {
