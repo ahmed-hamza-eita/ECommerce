@@ -32,8 +32,8 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Loading())
 
                 //Auth
-              //  val authResult = withContext(IO) { loginAction() }
-                val authResult = loginAction()
+               val authResult = withContext(IO) { loginAction() }
+
                 val userId = authResult.user?.uid
                 if (userId == null) {
                     val msg = "Sign in UserID not found"
