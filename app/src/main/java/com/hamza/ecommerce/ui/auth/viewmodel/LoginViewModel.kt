@@ -70,8 +70,8 @@ class LoginViewModel(
                         _loginState.emit(Resource.Success(resource.data))
                     }
 
-                      else -> {
-                        _loginState.emit(Resource.Error(Exception("Unknown error")))
+                    else -> {
+                        _loginState.emit(Resource.Error(Exception(resource.exception?.message)))
                     }
                 }
             }
