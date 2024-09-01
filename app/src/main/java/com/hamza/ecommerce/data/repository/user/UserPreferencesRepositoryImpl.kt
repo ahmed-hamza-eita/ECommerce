@@ -1,24 +1,38 @@
 package com.hamza.ecommerce.data.repository.user
 
 import android.content.Context
-import androidx.datastore.preferences.core.edit
-import com.hamza.ecommerce.data.datasource.datastore.DataStoreKeys.IS_USER_LOGGED_IN
-import com.hamza.ecommerce.data.datasource.datastore.UserPreferencesDataStore
-import com.hamza.ecommerce.data.datasource.datastore.dataStore
+import com.hamza.ecommerce.data.datasource.datastore.userDetailsDataStore
+import com.hamza.ecommerce.data.models.user.UserDetailsPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreferencesRepositoryImpl(private val userPreferencesDataStore: UserPreferencesDataStore) :
-    UserPreferencesRepository {
+class UserPreferenceRepositoryImpl(private val context: Context) : UserPreferenceRepository {
 
 
-    override suspend fun saveUserLoggedInState(isUserLoggedIn: Boolean) =
-        userPreferencesDataStore.saveUserLoggedInState(isUserLoggedIn)
 
-    override suspend fun isUserLoggedIn(): Flow<Boolean> = userPreferencesDataStore.isUserLoggedIn
+    override fun getUserDetails(): Flow<UserDetailsPreferences> {
+        return context.userDetailsDataStore.data
+    }
 
-    override suspend fun saveUserId(userId: String) = userPreferencesDataStore.saveUserId(userId)
-    override fun getUserId(): Flow<String?> = userPreferencesDataStore.userId
+    override suspend fun updateUserId(userId: String) {
+        context.userDetailsDataStore.updateData { preferences ->
+            preferences.toBuilder().setId(userId).build()
+        }
+    }
+
+    override suspend fun getUserId(): Flow<String> {
+        return context.userDetailsDataStore.data.map { it.id }
+    }
+
+    override suspend fun clearUserPreferences() {
+        context.userDetailsDataStore.updateData { preferences ->
+            preferences.toBuilder().clear().build()
+        }
+    }
+
+    override suspend fun updateUserDetails(userDetailsPreferences: UserDetailsPreferences) {
+        context.userDetailsDataStore.updateData { userDetailsPreferences }
+    }
 
 
 }

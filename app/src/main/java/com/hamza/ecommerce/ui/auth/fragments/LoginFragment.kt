@@ -22,10 +22,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hamza.ecommerce.R
-import com.hamza.ecommerce.data.datasource.datastore.UserPreferencesDataStore
+import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
-import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
+import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
 import com.hamza.ecommerce.databinding.FragmentLoginBinding
 import com.hamza.ecommerce.ui.auth.getGoogleRequestIntent
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
@@ -48,10 +48,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
     private val loginViewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(
-            userPrefs = UserPreferencesRepositoryImpl(UserPreferencesDataStore(requireActivity())),
-            authRepository = FirebaseAuthRepositoryImpl()
-        )
+        LoginViewModelFactory(requireContext())
     }
 
 

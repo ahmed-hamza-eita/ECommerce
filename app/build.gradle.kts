@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.google.firebase.crashlytics)
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
+    id("com.google.protobuf") version "0.9.4" apply true
+    id ("kotlin-parcelize")
+
 }
 
 android {
@@ -119,4 +122,28 @@ dependencies {
     //facebook login
     implementation(libs.facebook.android.sdk)
 
+    //proto data store
+    implementation(libs.androidx.datastore)
+    // to generate proto task for kt file
+    implementation(libs.protobuf.kotlin.lite)
+    implementation (libs.kotlinx.serialization.json)
+
+}
+// Setup protobuf configuration, generating lite Java and Kotlin classes
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.26.0"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

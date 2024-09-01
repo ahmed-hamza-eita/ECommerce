@@ -15,8 +15,6 @@ import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.hamza.ecommerce.R
-import com.hamza.ecommerce.data.datasource.datastore.UserPreferencesDataStore
-import com.hamza.ecommerce.data.repository.user.UserPreferencesRepositoryImpl
 import com.hamza.ecommerce.databinding.ActivityMainBinding
 import com.hamza.ecommerce.ui.auth.AuthActivity
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
@@ -29,7 +27,7 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : AppCompatActivity() {
     private lateinit var splashScreen: SplashScreen
     private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserPreferencesRepositoryImpl(UserPreferencesDataStore(this)))
+        UserViewModelFactory(context = this)
     }
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
