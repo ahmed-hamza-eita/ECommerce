@@ -3,6 +3,7 @@ package com.hamza.ecommerce.ui.auth.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepository
@@ -11,12 +12,49 @@ import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
+import com.hamza.ecommerce.utils.isValidEmail
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class RegisterViewModel(
     private val appPreferencesRepository: AppPreferenceRepository,
     private val userPreferencesRepository: UserPreferenceRepository,
     private val authRepository: FirebaseAuthRepository
-) : ViewModel() {}
+) : ViewModel() {
+
+    val name = MutableStateFlow("")
+    val email = MutableStateFlow("")
+    val password = MutableStateFlow("")
+    val confirmPassword = MutableStateFlow("")
+
+    private val isRegisterValid =
+        combine(name, email, password, confirmPassword) { name, email, password, confirmPassword ->
+            name.trim().isNotEmpty()
+                    && email.trim().isValidEmail()
+                    && password.trim().length >= 6
+                    && confirmPassword == password
+        }
+
+    fun registerWithEmailAndPassword() = viewModelScope.launch {
+        val name = name.value
+        val email = email.value
+        val password = password.value
+        val confirmPassword = confirmPassword.value
+        if (isRegisterValid.first()) {
+            if (password == confirmPassword) {
+                // handleFlow { authRepository.registerWithEmailAndPassword(email, password) }
+            } else {
+                // _registerState.emit(Resource.Error(Exception("Passwords do not match")))
+            }
+        } else {
+            // _registerState.emit(Resource.Error(Exception("Invalid registration details")))
+        }
+
+
+    }
+}
 
 class RegisterViewModelFactory(private val context: Context) :
     ViewModelProvider.Factory {

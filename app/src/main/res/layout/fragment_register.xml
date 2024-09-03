@@ -43,6 +43,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_full_name"
                 style="@style/EditTextStyle"
+                android:text="@={viewmodel.name}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -57,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_mail"
+                android:text="@={viewmodel.email}"
                 android:hint="@string/enter_your_e_mail"
                 android:inputType="textEmailAddress" />
 
@@ -68,6 +70,7 @@
                 android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/ic_lock"
                 android:hint="@string/enter_password"
+                android:text="@={viewmodel.password}"
                 android:inputType="textPassword" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -77,11 +80,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/ic_lock"
+                android:text="@={viewmodel.confirmPassword}"
                 android:hint="@string/password_again"
                 android:inputType="textPassword" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btn_register"
+                android:onClickListener="@{() -> viewmodel.registerWithEmailAndPassword}"
+
                 style="@style/PrimaryButtonStyle"
                 android:layout_marginTop="16dp"
                 android:text="@string/sign_up" />
