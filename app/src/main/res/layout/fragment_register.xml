@@ -55,6 +55,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_email"
                 style="@style/EditTextStyle"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_mail"
