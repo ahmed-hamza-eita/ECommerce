@@ -14,20 +14,26 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     override val bindingInflater: (LayoutInflater) -> ViewBinding
         get() = FragmentRegisterBinding::inflate
 
-    private val loginViewModel: RegisterViewModel by viewModels {
+    private val registerViewModel: RegisterViewModel by viewModels {
         RegisterViewModelFactory(requireContext())
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewmodel = loginViewModel
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewmodel = registerViewModel
+        }
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.apply {
+            btnGoToSignInScreen.setOnClickListener {
+                navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+            }
+        }
     }
 
 
