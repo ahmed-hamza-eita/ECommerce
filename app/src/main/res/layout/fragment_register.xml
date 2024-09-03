@@ -88,7 +88,6 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btn_register"
                 android:onClickListener="@{() -> viewmodel.registerWithEmailAndPassword}"
-
                 style="@style/PrimaryButtonStyle"
                 android:layout_marginTop="16dp"
                 android:text="@string/sign_up" />

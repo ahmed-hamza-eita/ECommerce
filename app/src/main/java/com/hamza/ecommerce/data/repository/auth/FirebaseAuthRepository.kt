@@ -20,5 +20,7 @@ interface FirebaseAuthRepository {
         password: String
     ): Flow<Resource<UserDetailsModel>>
 
+    suspend fun sendEmailVerification()
+
     fun signOut()
 }

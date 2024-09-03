@@ -37,7 +37,6 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
         initViewModel()
     }
 
-  
 
     private fun initListeners() {
         binding.apply {
@@ -46,6 +45,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
             }
         }
     }
+
     private fun initViewModel() {
         lifecycleScope.launch {
             registerViewModel.registerState.collect { registerState ->
@@ -58,9 +58,10 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
                         is Resource.Success -> {
                             progressDialog.dismiss()
-                           requireContext().showToast(resource.data.toString())
-                            requireContext().showToast("Register Successful")
-                            
+                            //  requireContext().showToast(resource.data.toString())
+                            requireContext().showToast("check your email to verify your account")
+                            findNavController().popBackStack()
+
                         }
 
                         is Resource.Error -> {
@@ -76,8 +77,9 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
             }
         }
     }
+
     companion object {
         private const val TAG = "RegisterFragment"
-         
+
     }
 }

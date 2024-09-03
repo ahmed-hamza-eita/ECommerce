@@ -56,21 +56,20 @@ class RegisterViewModel(
                 name = name,
                 password = password
             ).collect { resource ->
-                    when (resource) {
-                        is Resource.Loading -> _registerState.emit(Resource.Loading())
-                        is Resource.Success -> {
-
-                            _registerState.emit(Resource.Success(resource.data!!))
-                        }
-
-                        is Resource.Error -> _registerState.emit(Resource.Error(Exception(resource.exception?.message)))
+                when (resource) {
+                    is Resource.Loading -> _registerState.emit(Resource.Loading())
+                    is Resource.Success -> {
+                        authRepository.sendEmailVerification()
+                        _registerState.emit(Resource.Success(resource.data!!))
                     }
+
+                    is Resource.Error -> _registerState.emit(Resource.Error(Exception(resource.exception?.message)))
                 }
+            }
 
         } else {
             _registerState.emit(Resource.Error(Exception("Invalid registration details")))
         }
-
     }
 }
 

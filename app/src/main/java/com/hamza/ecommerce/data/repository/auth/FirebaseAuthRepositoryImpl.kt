@@ -32,16 +32,22 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Loading())
 
                 //Auth
-               val authResult = withContext(IO) { loginAction() }
+                val authResult = withContext(IO) { loginAction() }
 
                 val userId = authResult.user?.uid
+                val isEmailVerified = authResult.user?.isEmailVerified
                 if (userId == null) {
                     val msg = "Sign in UserID not found"
                     logAuthIssueToCrashlytics(msg, provider.name)
                     emit(Resource.Error(Exception(msg)))
                     return@flow
                 }
-
+                if (isEmailVerified == false) {
+                    val msg = "Email not verified"
+                    logAuthIssueToCrashlytics(msg, provider.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
                 // Get user details from Firestore
                 val userDoc = firestore.collection("users").document(userId).get().await()
                 if (!userDoc.exists()) {
@@ -62,7 +68,8 @@ class FirebaseAuthRepositoryImpl(
                     userDetails?.let {
                         emit(Resource.Success(userDetails))
                     } ?: run {
-                        val msg = "Error mapping user details to UserDetailsModel, user id = $userId"
+                        val msg =
+                            "Error mapping user details to UserDetailsModel, user id = $userId"
                         logAuthIssueToCrashlytics(msg, provider.name)
                         emit(Resource.Error(Exception(msg)))
                     }
@@ -132,6 +139,9 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
+    override suspend fun sendEmailVerification() {
+        auth.currentUser?.sendEmailVerification()?.await()
+    }
 
     override fun signOut() {
         auth.signOut()
