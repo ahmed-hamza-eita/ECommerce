@@ -94,6 +94,44 @@ class FirebaseAuthRepositoryImpl(
             auth.signInWithCredential(credential).await()
         }
 
+    override suspend fun registerWithEmailAndPassword(
+        name: String,
+        email: String,
+        password: String
+    ): Flow<Resource<UserDetailsModel>> {
+        return flow {
+            try {
+                //Loading
+                emit(Resource.Loading())
+
+                //Auth
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+
+                val userId = authResult.user?.uid
+                if (userId == null) {
+                    val msg = "Sign in UserID not found"
+                    logAuthIssueToCrashlytics(msg, AuthProvider.EMAIL.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+
+                // Store user data in Firestore
+                val userDetails = UserDetailsModel(
+                    id = userId,
+                    email = email,
+                    name = name,
+                    createdAt = System.currentTimeMillis(),
+                    disabled = false,
+                    reviews = emptyList()
+                )
+                firestore.collection("users").document(userId).set(userDetails).await()
+                emit(Resource.Success(userDetails))
+            } catch (e: Exception) {
+                emit(Resource.Error(e))
+            }
+        }
+    }
+
 
     override fun signOut() {
         auth.signOut()
