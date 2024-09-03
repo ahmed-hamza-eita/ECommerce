@@ -70,6 +70,9 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
             btnSignInWithFacebook.setOnClickListener {
                 loginWithFacebook()
             }
+            btnGoToRegister.setOnClickListener {
+                navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+            }
         }
     }
 

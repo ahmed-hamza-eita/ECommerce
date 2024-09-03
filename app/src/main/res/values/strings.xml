@@ -16,7 +16,12 @@
     <string name="retry">Retry</string>
     <string name="google_sign_in_field_msg">Google sign in failed, please retry again later.</string>
     <string name="generic_err_msg">Error please try again later.</string>
-
+    <string name="signup_msg">Let’s Get Started</string>
+    <string name="create_an_new_account_msg">Create an new account</string>
+    <string name="sign_up">Sign up</string>
+    <string name="full_name">Full Name</string>
+    <string name="password_again">Password again</string>
+    <string name="have_a_account">have a account?</string>
 
 
 </resources>
