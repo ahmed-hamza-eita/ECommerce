@@ -3,6 +3,9 @@
 
     <data>
 
+        <variable
+            name="viewmodel"
+            type="com.hamza.ecommerce.ui.auth.viewmodel.RegisterViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
