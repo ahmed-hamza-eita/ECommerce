@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.hamza.ecommerce.databinding.FragmentRegisterBinding
 import com.hamza.ecommerce.ui.auth.viewmodel.RegisterViewModel
@@ -31,7 +32,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     private fun initListeners() {
         binding.apply {
             btnGoToSignInScreen.setOnClickListener {
-                navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+                findNavController().popBackStack()
             }
         }
     }
