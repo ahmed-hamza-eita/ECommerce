@@ -143,6 +143,17 @@ class FirebaseAuthRepositoryImpl(
         auth.currentUser?.sendEmailVerification()?.await()
     }
 
+    override suspend fun resetPassword(email: String): Flow<Resource<String>> = flow {
+
+        try {
+            emit(Resource.Loading())
+            auth.sendPasswordResetEmail(email).await()
+            emit(Resource.Success("Password reset email sent"))
+        } catch (e: Exception) {
+            emit(Resource.Error(e))
+        }
+    }
+
     override fun signOut() {
         auth.signOut()
     }
