@@ -6,11 +6,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.hamza.ecommerce.R
 
@@ -24,6 +27,24 @@ fun View.showSnakeBarError(message: String) {
         .setAction(this.context.resources.getString(R.string.ok)) {}.setActionTextColor(
             ContextCompat.getColor(this.context, R.color.white)
         ).show()
+}
+
+fun Fragment.showDialog(title: String, message: String) {
+    MaterialAlertDialogBuilder(requireActivity())
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("OK") { dialog, _ ->
+            dialog?.dismiss() // Only dismiss the dialog, not the fragment
+        }.create().show()
+}
+fun BottomSheetDialogFragment.showDialog(title: String, message: String) {
+    MaterialAlertDialogBuilder(requireActivity())
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("OK") { dialog, _ ->
+            dialog?.dismiss()
+            this.dismiss()  // Dismiss the BottomSheetDialogFragment
+        }.create().show()
 }
 
 fun View.showRetrySnakeBarError(message: String, retry: () -> Unit) {
