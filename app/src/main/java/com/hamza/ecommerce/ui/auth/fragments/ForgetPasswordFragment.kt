@@ -59,16 +59,18 @@ class ForgetPasswordFragment : BottomSheetDialogFragment() {
                                       }
 
                     is Resource.Success -> {
+                        progressDialog.dismiss()
                         showDialog(
                             title = "Reset Password",
                             message = "We have sent you an email to reset your password. Please check your email."
                         )
-                        progressDialog.dismiss()
+
                     }
                     is Resource.Error -> {
+                        progressDialog.dismiss()
                         val msg = resource.exception?.message ?: getString(R.string.generic_err_msg)
                         view?.showSnakeBarError(msg)
-                        progressDialog.dismiss()
+
 
                     }
                 }
