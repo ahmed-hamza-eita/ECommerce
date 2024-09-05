@@ -73,6 +73,11 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
             btnGoToRegister.setOnClickListener {
                 navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
             }
+            btnForgetPassword.setOnClickListener {
+                val forgetPasswordFragment = ForgetPasswordFragment()
+                forgetPasswordFragment.show(parentFragmentManager, "forget-password")
+            }
+
         }
     }
 

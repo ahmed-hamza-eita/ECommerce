@@ -21,6 +21,6 @@ interface FirebaseAuthRepository {
     ): Flow<Resource<UserDetailsModel>>
 
     suspend fun sendEmailVerification()
-
+    suspend fun resetPassword(email: String): Flow<Resource<String>>
     fun signOut()
 }
