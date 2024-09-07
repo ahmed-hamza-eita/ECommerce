@@ -16,47 +16,35 @@ import com.hamza.ecommerce.ui.auth.viewmodel.ForgetPasswordViewModelFactory
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
 import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
+import com.hamza.ecommerce.utils.BaseBottomSheetFragment
 import com.hamza.ecommerce.utils.showDialog
 import com.hamza.ecommerce.utils.showSnakeBarError
 import kotlinx.coroutines.launch
 
 
-class ForgetPasswordFragment : BottomSheetDialogFragment() {
+class ForgetPasswordFragment :
+    BaseBottomSheetFragment<FragmentForgetPasswordBinding, ForgetPasswordViewModel>() {
 
-    private var _binding: FragmentForgetPasswordBinding? = null
-    private val binding get() = _binding!!
 
-    private val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels {
+    override val viewModel: ForgetPasswordViewModel by viewModels {
         ForgetPasswordViewModelFactory(requireContext())
     }
-    private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentForgetPasswordBinding.inflate(inflater, container, false)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewmodel = forgetPasswordViewModel
 
-        }
-        return binding.root
-    }
+    override fun getLayoutResId(): Int = R.layout.fragment_forget_password
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun init() {
         initViewModel()
     }
 
     private fun initViewModel() {
         lifecycleScope.launch {
-            forgetPasswordViewModel.restPasswordState.collect { resource ->
+            viewModel.restPasswordState.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         progressDialog.show()
-                                      }
+                    }
 
                     is Resource.Success -> {
                         progressDialog.dismiss()
@@ -66,6 +54,7 @@ class ForgetPasswordFragment : BottomSheetDialogFragment() {
                         )
 
                     }
+
                     is Resource.Error -> {
                         progressDialog.dismiss()
                         val msg = resource.exception?.message ?: getString(R.string.generic_err_msg)

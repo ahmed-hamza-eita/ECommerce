@@ -32,7 +32,7 @@ import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
 import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
 import com.hamza.ecommerce.ui.home.MainActivity
-import com.hamza.ecommerce.utils.BindingFragment
+import com.hamza.ecommerce.utils.BaseFragment
 import com.hamza.ecommerce.utils.CrashlyticsUtils
 import com.hamza.ecommerce.utils.CrashlyticsUtils.CUSTOM_KEY
 import com.hamza.ecommerce.utils.LoginException
@@ -41,23 +41,21 @@ import com.hamza.ecommerce.utils.showToast
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class LoginFragment : BindingFragment<FragmentLoginBinding>() {
-    override val bindingInflater: (LayoutInflater) -> ViewBinding
-        get() = FragmentLoginBinding::inflate
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
+
 
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
-    private val loginViewModel: LoginViewModel by viewModels {
+
+    override val viewModel: LoginViewModel by viewModels {
         LoginViewModelFactory(requireContext())
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewmodel = loginViewModel
-        }
+    override fun getLayoutResId(): Int = R.layout.fragment_login
+
+
+    override fun init() {
         initListeners()
         initViewModel()
     }
@@ -83,7 +81,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     private fun initViewModel() {
         lifecycleScope.launch {
-            loginViewModel.loginState.collect { loginState ->
+            viewModel.loginState.collect { loginState ->
                 Log.d(TAG, "initViewModel $loginState")
                 loginState.let { resource ->
                     when (resource) {
@@ -148,7 +146,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
 
     private fun firebaseAuthWithGoogle(idToken: String) {
-        loginViewModel.loginWithGoogle(idToken)
+        viewModel.loginWithGoogle(idToken)
     }
 
     private fun loginWithFacebook() {
@@ -178,7 +176,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     }
 
     private fun firebaseAuthWithFacebook(token: String) {
-        loginViewModel.loginWithFacebook(token)
+        viewModel.loginWithFacebook(token)
     }
 
     private fun isLoggedIn(): Boolean {
