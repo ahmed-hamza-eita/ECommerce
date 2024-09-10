@@ -6,7 +6,6 @@ import com.google.firebase.firestore.PropertyName
 import kotlinx.parcelize.Parcelize
 
 
-
 @Keep
 @Parcelize
 data class UserDetailsModel(
@@ -18,4 +17,5 @@ data class UserDetailsModel(
     var name: String? = null,
     var disabled: Boolean? = null,
     var reviews: List<String>? = null,
-): Parcelable
+    var idToken: String? = null
+) : Parcelable

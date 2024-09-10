@@ -33,15 +33,23 @@ class FirebaseAuthRepositoryImpl(
 
                 //Auth
                 val authResult = withContext(IO) { loginAction() }
-
                 val userId = authResult.user?.uid
                 val isEmailVerified = authResult.user?.isEmailVerified
+                val idTokenResult = authResult.user?.getIdToken(false)?.await()
+
                 if (userId == null) {
                     val msg = "Sign in UserID not found"
                     logAuthIssueToCrashlytics(msg, provider.name)
                     emit(Resource.Error(Exception(msg)))
                     return@flow
                 }
+                if (idTokenResult == null) {
+                    val msg = "Sign in ID Token not found"
+                    logAuthIssueToCrashlytics(msg, provider.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+
                 if (isEmailVerified == false) {
                     val msg = "Email not verified"
                     logAuthIssueToCrashlytics(msg, provider.name)
@@ -50,6 +58,8 @@ class FirebaseAuthRepositoryImpl(
                 }
                 // Get user details from Firestore
                 val userDoc = firestore.collection("users").document(userId).get().await()
+                val idToken = idTokenResult.token ?: ""
+
                 if (!userDoc.exists()) {
                     // First time login, store user data in Firestore
                     val userDetails = UserDetailsModel(
@@ -58,15 +68,23 @@ class FirebaseAuthRepositoryImpl(
                         name = authResult.user?.displayName ?: "",
                         createdAt = System.currentTimeMillis(),
                         disabled = false,
-                        reviews = emptyList()
+                        reviews = emptyList(),
+                        idToken = idToken
                     )
                     firestore.collection("users").document(userId).set(userDetails).await()
                     emit(Resource.Success(userDetails))
                 } else {
+
                     // Map user details to UserDetailsModel
                     val userDetails = userDoc.toObject(UserDetailsModel::class.java)
                     userDetails?.let {
-                        emit(Resource.Success(userDetails))
+                        emit(
+                            Resource.Success(
+                                userDetails.copy(
+                                    idToken = idTokenResult.token ?: ""
+                                )
+                            )
+                        )
                     } ?: run {
                         val msg =
                             "Error mapping user details to UserDetailsModel, user id = $userId"
@@ -113,7 +131,7 @@ class FirebaseAuthRepositoryImpl(
 
                 //Auth
                 val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-
+                val idTokenResult = authResult.user?.getIdToken(false)?.await()
                 val userId = authResult.user?.uid
                 if (userId == null) {
                     val msg = "Sign in UserID not found"
@@ -121,7 +139,7 @@ class FirebaseAuthRepositoryImpl(
                     emit(Resource.Error(Exception(msg)))
                     return@flow
                 }
-
+                val idToken = idTokenResult?.token ?: ""
                 // Store user data in Firestore
                 val userDetails = UserDetailsModel(
                     id = userId,
@@ -129,7 +147,8 @@ class FirebaseAuthRepositoryImpl(
                     name = name,
                     createdAt = System.currentTimeMillis(),
                     disabled = false,
-                    reviews = emptyList()
+                    reviews = emptyList(),
+                    idToken = idToken
                 )
                 firestore.collection("users").document(userId).set(userDetails).await()
                 emit(Resource.Success(userDetails))
