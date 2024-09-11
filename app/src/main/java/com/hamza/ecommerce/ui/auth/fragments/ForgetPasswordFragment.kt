@@ -1,34 +1,24 @@
 package com.hamza.ecommerce.ui.auth.fragments;
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hamza.ecommerce.R
 import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.databinding.FragmentForgetPasswordBinding
 import com.hamza.ecommerce.ui.auth.viewmodel.ForgetPasswordViewModel
-import com.hamza.ecommerce.ui.auth.viewmodel.ForgetPasswordViewModelFactory
-import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
-import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
-import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
 import com.hamza.ecommerce.utils.BaseBottomSheetFragment
 import com.hamza.ecommerce.utils.showDialog
 import com.hamza.ecommerce.utils.showSnakeBarError
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ForgetPasswordFragment :
     BaseBottomSheetFragment<FragmentForgetPasswordBinding, ForgetPasswordViewModel>() {
 
 
-    override val viewModel: ForgetPasswordViewModel by viewModels {
-        ForgetPasswordViewModelFactory(requireContext())
-    }
+    override val viewModel: ForgetPasswordViewModel by viewModels()
 
 
     override fun getLayoutResId(): Int = R.layout.fragment_forget_password

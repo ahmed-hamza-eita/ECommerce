@@ -5,9 +5,10 @@ import com.hamza.ecommerce.data.datasource.datastore.userDetailsDataStore
 import com.hamza.ecommerce.data.models.user.UserDetailsPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class UserPreferenceRepositoryImpl(private val context: Context) : UserPreferenceRepository {
-
+class UserPreferenceRepositoryImpl @Inject constructor(private val context: Context) :
+    UserPreferenceRepository {
 
 
     override fun getUserDetails(): Flow<UserDetailsPreferences> {

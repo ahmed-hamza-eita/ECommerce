@@ -15,7 +15,11 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.hamza.ecommerce.BR
+import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
+import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
+import dagger.Binds
+import javax.inject.Singleton
 
 
 abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
@@ -48,6 +52,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
         doDataBinding()
         init()
     }
+
 
     /**
      * Do your other stuff in init after binding layout.
