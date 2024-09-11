@@ -18,17 +18,17 @@ import com.hamza.ecommerce.R
 import com.hamza.ecommerce.databinding.ActivityMainBinding
 import com.hamza.ecommerce.ui.auth.AuthActivity
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
-import com.hamza.ecommerce.ui.common.viewmodel.UserViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var splashScreen: SplashScreen
-    private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(context = this)
-    }
+    private val userViewModel: UserViewModel by viewModels()
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {

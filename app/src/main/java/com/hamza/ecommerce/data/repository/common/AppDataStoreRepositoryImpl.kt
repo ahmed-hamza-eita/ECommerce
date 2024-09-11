@@ -2,8 +2,9 @@ package com.hamza.ecommerce.data.repository.common
 
 import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AppDataStoreRepositoryImpl(
+class AppDataStoreRepositoryImpl @Inject constructor(
     private val appPreferencesDataSource: AppPreferencesDataSource
 ) : AppPreferenceRepository {
 

@@ -8,18 +8,17 @@ import com.hamza.ecommerce.R
 import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.databinding.FragmentRegisterBinding
 import com.hamza.ecommerce.ui.auth.viewmodel.RegisterViewModel
-import com.hamza.ecommerce.ui.auth.viewmodel.RegisterViewModelFactory
 import com.hamza.ecommerce.utils.BaseFragment
 import com.hamza.ecommerce.utils.showSnakeBarError
 import com.hamza.ecommerce.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>() {
 
 
-    override val viewModel: RegisterViewModel by viewModels {
-        RegisterViewModelFactory(requireContext())
-    }
+    override val viewModel: RegisterViewModel by viewModels()
 
     override fun getLayoutResId(): Int  = R.layout.fragment_register
 

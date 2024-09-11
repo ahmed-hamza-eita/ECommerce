@@ -25,11 +25,12 @@ import com.hamza.ecommerce.R
 import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
+import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
+import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
 import com.hamza.ecommerce.databinding.FragmentLoginBinding
 import com.hamza.ecommerce.ui.auth.getGoogleRequestIntent
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
-import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
 import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
 import com.hamza.ecommerce.ui.home.MainActivity
 import com.hamza.ecommerce.utils.BaseFragment
@@ -38,18 +39,18 @@ import com.hamza.ecommerce.utils.CrashlyticsUtils.CUSTOM_KEY
 import com.hamza.ecommerce.utils.LoginException
 import com.hamza.ecommerce.utils.showSnakeBarError
 import com.hamza.ecommerce.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
 
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
 
-    override val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(requireContext())
-    }
+    override val viewModel: LoginViewModel by viewModels()
 
 
     override fun getLayoutResId(): Int = R.layout.fragment_login

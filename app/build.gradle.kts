@@ -6,7 +6,9 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("com.google.protobuf") version "0.9.4" apply true
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
+
 
 }
 
@@ -127,7 +129,14 @@ dependencies {
     implementation(libs.androidx.datastore)
     // to generate proto task for kt file
     implementation(libs.protobuf.kotlin.lite)
-    implementation (libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
+
+    //dagger hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.fragment)
+    kapt(libs.androidx.hilt.compiler)
+
 
 }
 // Setup protobuf configuration, generating lite Java and Kotlin classes
@@ -147,4 +156,8 @@ protobuf {
             }
         }
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }
