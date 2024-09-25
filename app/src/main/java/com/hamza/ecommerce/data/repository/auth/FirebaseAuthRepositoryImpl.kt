@@ -6,7 +6,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.hamza.ecommerce.data.datasource.networking.CloudFunctionAPI
+import com.hamza.ecommerce.data.datasource.networking.handleErrorResponse
 import com.hamza.ecommerce.data.models.Resource
+import com.hamza.ecommerce.data.models.auth.RegisterRequestModel
+import com.hamza.ecommerce.data.models.auth.RegisterResponseModel
 import com.hamza.ecommerce.data.models.user.UserDetailsModel
 import com.hamza.ecommerce.utils.CrashlyticsUtils
 import kotlinx.coroutines.Dispatchers.IO
@@ -161,9 +164,33 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun registerWithEmailAndPasswordApi(
+        requestModel: RegisterRequestModel
+    ): Flow<Resource<RegisterResponseModel>> = flow {
+        try {
+            emit(Resource.Loading())
+
+            val response = cloudFunctionAPI.registerUser(requestModel)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(Resource.Success(it.data!!))
+                } ?: run {
+                    emit(Resource.Error(Exception("Response body is null")))
+                }
+            } else {
+                val errorMsg =
+                    handleErrorResponse(response.errorBody()?.charStream() ?: return@flow)
+                emit(Resource.Error(Exception(errorMsg)))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e))
+        }
+    }
+
     override suspend fun sendEmailVerification() {
         auth.currentUser?.sendEmailVerification()?.await()
     }
+
     override suspend fun resetPassword(email: String): Flow<Resource<String>> = flow {
 
         try {
