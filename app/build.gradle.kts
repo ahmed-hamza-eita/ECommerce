@@ -137,6 +137,11 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.fragment)
     kapt(libs.androidx.hilt.compiler)
 
+    //retrofit dependency
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
 
 }
 // Setup protobuf configuration, generating lite Java and Kotlin classes
