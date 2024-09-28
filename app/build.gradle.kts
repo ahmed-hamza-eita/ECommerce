@@ -115,7 +115,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
-
+    implementation(libs.androidx.viewpager2)
     //data store
     implementation(libs.androidx.datastore.preferences)
 
