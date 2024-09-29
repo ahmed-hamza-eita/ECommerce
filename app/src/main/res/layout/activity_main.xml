@@ -30,8 +30,6 @@
         android:layout_height="93dp"
         android:background="?android:attr/windowBackground"
         app:itemIconTint="@drawable/home_nav_items_color"
-
-
         app:itemIconSize="20dp"
         app:itemTextColor="@drawable/home_nav_items_color"
         app:labelVisibilityMode="labeled"
