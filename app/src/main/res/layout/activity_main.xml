@@ -14,25 +14,28 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:nestedScrollingEnabled="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:visibility="visible" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/neutral_light"
-        android:paddingBottom="4dp" />
-
+        android:paddingBottom="4dp"
+        tools:visibility="visible" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
         style="@style/Widget.App.BottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="93dp"
+        android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         app:itemIconTint="@drawable/home_nav_items_color"
-        app:itemIconSize="20dp"
+        app:itemIconSize="24dp"
         app:itemTextColor="@drawable/home_nav_items_color"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/home_nav_menu" />
+        app:menu="@menu/home_nav_menu"
+        tools:visibility="visible"
+        tools:showIn="@layout/activity_main" />
 
 </LinearLayout>
