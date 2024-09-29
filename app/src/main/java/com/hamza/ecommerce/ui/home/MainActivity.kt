@@ -16,8 +16,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.hamza.ecommerce.R
 import com.hamza.ecommerce.databinding.ActivityMainBinding
+import com.hamza.ecommerce.ui.account.fragments.AccountFragment
 import com.hamza.ecommerce.ui.auth.AuthActivity
+import com.hamza.ecommerce.ui.cart.fragments.CartFragment
 import com.hamza.ecommerce.ui.common.viewmodel.UserViewModel
+import com.hamza.ecommerce.ui.explore.fragments.ExploreFragment
+import com.hamza.ecommerce.ui.home.adapters.HomeViewPagerAdapter
+import com.hamza.ecommerce.ui.home.fragment.HomeFragment
+import com.hamza.ecommerce.ui.offers.fragments.OffersFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.first
@@ -27,10 +33,12 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private lateinit var splashScreen: SplashScreen
     private val userViewModel: UserViewModel by viewModels()
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
@@ -38,19 +46,50 @@ class MainActivity : AppCompatActivity() {
         ifUserLoggedIn()
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         initViewModel()
-        // checkUserLoggedIn()
-        //keepSplashScreenFor5Seconds()
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
+        initViews()
+
 
     }
 
+    private fun initViews() {
+        initViewPager()
+        initBottomNavigationView()
+    }
+
+    private fun initBottomNavigationView() {
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.homeFragment -> binding.homeViewPager.currentItem = 0
+                R.id.exploreFragment -> binding.homeViewPager.currentItem = 1
+                R.id.cartFragment -> binding.homeViewPager.currentItem = 2
+                R.id.offerFragment -> binding.homeViewPager.currentItem = 3
+                R.id.accountFragment -> binding.homeViewPager.currentItem = 4
+            }
+            true
+        }
+    }
+
+    private fun initViewPager() {
+        val fragments = listOf(
+            HomeFragment(),
+            ExploreFragment(),
+            CartFragment(),
+            OffersFragment(),
+            AccountFragment()
+        )
+
+        binding.homeViewPager.offscreenPageLimit = fragments.size
+        binding.homeViewPager.adapter = HomeViewPagerAdapter(this, fragments)
+        binding.homeViewPager.registerOnPageChangeCallback(
+            object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.bottomNavigationView.menu.getItem(position).isChecked = true
+                }
+            }
+        )
+    }
 
     private fun checkUserLoggedIn() {
         lifecycleScope.launch(Main) {
