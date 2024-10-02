@@ -100,9 +100,12 @@
                     android:paddingBottom="16dp"
                     tools:visibility="visible" />
 
-
-
-
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/sale_ads_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

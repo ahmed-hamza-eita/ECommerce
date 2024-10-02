@@ -93,7 +93,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.google.android.material:material:1.13.0-alpha06")
+    implementation(libs.material.v1130alpha06)
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -105,6 +105,9 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.play.services.auth)
 
+    //glide
+    implementation(libs.github.glide)
+    annotationProcessor(libs.compiler)
 
     //splash screen
     implementation(libs.androidx.core.splashscreen)
