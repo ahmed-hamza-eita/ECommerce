@@ -4,8 +4,8 @@ import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepository
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
-import com.hamza.ecommerce.data.repository.home.SalesAdRepository
-import com.hamza.ecommerce.data.repository.home.SalesAdRepositoryImpl
+import com.hamza.ecommerce.data.repository.home.SalesAdsRepository
+import com.hamza.ecommerce.data.repository.home.SalesAdsRepositoryImpl
 import com.hamza.ecommerce.data.repository.user.UserFirestoreRepository
 import com.hamza.ecommerce.data.repository.user.UserFirestoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
@@ -46,6 +46,6 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindSalesAdRepository(salesAdRepositoryImpl: SalesAdRepositoryImpl)
-            : SalesAdRepository
+    abstract fun bindSalesAdRepository(salesAdRepositoryImpl: SalesAdsRepositoryImpl)
+            : SalesAdsRepository
 }
