@@ -108,7 +108,8 @@ dependencies {
     //glide
     implementation(libs.github.glide)
     annotationProcessor(libs.compiler)
-
+//shimmer
+    implementation(libs.shimmer)
     //splash screen
     implementation(libs.androidx.core.splashscreen)
 
