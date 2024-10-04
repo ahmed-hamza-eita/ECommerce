@@ -2,11 +2,13 @@ package com.hamza.ecommerce.ui.home.fragment
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.hamza.ecommerce.R
+import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.databinding.FragmentHomeBinding
 import com.hamza.ecommerce.ui.common.customviews.CircleView
 import com.hamza.ecommerce.ui.common.customviews.sliderIndicatorsView
@@ -56,7 +58,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun init() {
         //  initListeners()
-        //  initViewModel()
+        initViewModel()
         initSalesAdsView(
             listOf(
                 SalesAdUIModel(
@@ -71,6 +73,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 ),
             )
         )
+    }
+
+    private fun initViewModel() {
+        lifecycleScope.launch {
+            viewModel.salesAdsState.collect { resources ->
+                when (resources) {
+
+                    is Resource.Loading -> {
+                        Log.d(TAG, "initViewModel: Loading")
+                    }
+                    is Resource.Success -> {
+                        initSalesAdsView(resources.data)
+                    }
+                    is Resource.Error -> {
+                        Log.e(TAG, "initViewModel: ${"Error"}")
+                    }
+
+
+
+                }
+            }
+        }
     }
 
 
