@@ -12,72 +12,70 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Light">
+            android:background="@color/white"
+            android:paddingTop="30dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:paddingTop="60dp"
-                    app:layout_collapseMode="pin">
-
-                    <TextView
-                        android:id="@+id/btn_search"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="5dp"
-                        android:layout_weight="11"
-                        android:background="@drawable/edit_text_background"
-                        android:drawablePadding="16dp"
-                        android:hint="@string/search_products"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/neutral_grey"
-                        app:drawableStartCompat="@drawable/ic_search"
-                        app:drawableTint="@color/primary_color" />
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btn_fav"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_fav" />
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btn_notification"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_notification" />
-                </LinearLayout>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    android:layout_height="79dp"
+                    android:background="@color/white"
+                    app:layout_collapseMode="pin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:id="@+id/search_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="11"
+                            android:background="@drawable/edit_text_background"
+                            android:drawablePadding="16dp"
+                            android:padding="16dp"
+                            android:text="@string/search_products"
+                            android:textColor="@color/neutral_grey"
+                            app:drawableStartCompat="@drawable/ic_search" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_fav" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_notification" />
+
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -100,12 +98,31 @@
                     android:paddingBottom="16dp"
                     tools:visibility="visible" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/sale_ads_view_pager"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:layout_height="wrap_content">
+
+                    <com.hamza.ecommerce.utils.NestedScrollableHost
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/sale_ads_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="220dp"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    </com.hamza.ecommerce.utils.NestedScrollableHost>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/indicator_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
