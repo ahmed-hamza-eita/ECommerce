@@ -57,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     is Resource.Success -> {
                         binding.saleAdsShimmerView.root.apply {
                             stopShimmer()
-                            View.GONE
+                            visibility = View.GONE
                         }
                         initSalesAdsView(resources.data)
 

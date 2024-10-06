@@ -15,7 +15,7 @@
         android:paddingEnd="16dp"
         android:paddingBottom="8dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:background="@color/neutral_grey"
             android:layout_width="match_parent"
             android:alpha="0.4"
