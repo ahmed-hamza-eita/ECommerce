@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <!-- Declare the variable that will hold the category data -->
+        <variable
+            name="category"
+            type="com.hamza.ecommerce.ui.home.models.CategoryUIModel" />  <!-- Replace with your package name -->
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/circle_border_bg"
+            android:padding="24dp"
+            android:src="@drawable/ic_category"
+            app:normalImageUrl="@{category.icon}" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/SmallTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:hint="@string/category"
+            android:text="@{category.name}" />
+
+
+    </LinearLayout>
+</layout>
