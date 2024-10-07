@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.hamza.ecommerce.R
 import com.hamza.ecommerce.data.models.Resource
@@ -13,7 +14,9 @@ import com.hamza.ecommerce.databinding.FragmentHomeBinding
 import com.hamza.ecommerce.ui.common.customviews.CircleView
 import com.hamza.ecommerce.ui.common.customviews.sliderIndicatorsView
 import com.hamza.ecommerce.ui.common.customviews.updateIndicators
+import com.hamza.ecommerce.ui.home.adapters.CategoriesAdapter
 import com.hamza.ecommerce.ui.home.adapters.SalesAdAdapter
+import com.hamza.ecommerce.ui.home.models.CategoryUIModel
 import com.hamza.ecommerce.ui.home.models.SalesAdUIModel
 import com.hamza.ecommerce.ui.home.viewmodel.HomeViewModel
 import com.hamza.ecommerce.utils.BaseFragment
@@ -46,6 +49,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun initViewModel() {
+        salesAdObserver()
+        categoriesObserver()
+    }
+
+    private fun salesAdObserver() {
         lifecycleScope.launch {
             viewModel.salesAdsState.collect { resources ->
                 when (resources) {
@@ -61,6 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                         }
                         initSalesAdsView(resources.data)
 
+
                     }
 
                     is Resource.Error -> {
@@ -73,6 +82,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
+    private fun categoriesObserver() {
+        lifecycleScope.launch {
+            viewModel.categoriesState.collect { resources ->
+                when (resources) {
+                    is Resource.Loading -> {
+                        Log.d(TAG, "iniViewModel: categories Loading")
+                    }
+                    is Resource.Success -> {
+                        binding.categoriesShimmerView.root.apply {
+                            stopShimmer()
+                            visibility = View.GONE
+                        }
+                        Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
+                        initCategoriesView(resources.data)
+                    }
+                    is Resource.Error -> {
+                        Log.d(TAG, "iniViewModel: categories Error: ${resources.exception?.message}")
+                    }
+                }
+            }
+        }
+    }
+    private fun initCategoriesView(data: List<CategoryUIModel>?) {
+        if (data.isNullOrEmpty()) {
+            return
+        }
+        val categoriesAdapter = CategoriesAdapter(data)
+        binding.categoriesRecyclerView.apply {
+            adapter = categoriesAdapter
+            setHasFixedSize(true)
+            isNestedScrollingEnabled = false
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+        }
+    }
 
     private fun initSalesAdsView(salesAds: List<SalesAdUIModel>?) {
         if (salesAds.isNullOrEmpty()) {
