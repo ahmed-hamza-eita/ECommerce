@@ -167,15 +167,40 @@
                         android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                        tools:listitem="@layout/item_category" />
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
                     <include
                         android:id="@+id/categories_shimmer_view"
                         layout="@layout/category_shimmer_view" />
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp">
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txt_flash_sale"
+                        style="@style/MediumTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="@string/flash_sale"
+                        android:textColor="@color/neutral_dark" />
+
+                    <TextView
+                        android:id="@+id/txt_see_more"
+                        style="@style/MediumTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/see_more"
+                        android:textColor="@color/primary_color"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
             </LinearLayout>
 
 
