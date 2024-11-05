@@ -1,5 +1,7 @@
 package com.hamza.ecommerce.di
 
+import com.hamza.ecommerce.data.repository.auth.CountryRepository
+import com.hamza.ecommerce.data.repository.auth.CountryRepositoryImpl
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepository
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.hamza.ecommerce.data.repository.category.CategoriesRepository
@@ -63,4 +65,11 @@ abstract class RepositoryModule {
     abstract fun provideProductsRepository(
         productsRepositoryImpl: ProductsRepositoryImpl
     ): ProductsRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun provideCountryRepository(
+        countryRepositoryImpl: CountryRepositoryImpl
+    ): CountryRepository
 }
