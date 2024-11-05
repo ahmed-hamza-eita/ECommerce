@@ -8,6 +8,8 @@ import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.data.repository.home.SalesAdsRepository
 import com.hamza.ecommerce.data.repository.home.SalesAdsRepositoryImpl
+import com.hamza.ecommerce.data.repository.products.ProductsRepository
+import com.hamza.ecommerce.data.repository.products.ProductsRepositoryImpl
 import com.hamza.ecommerce.data.repository.user.UserFirestoreRepository
 import com.hamza.ecommerce.data.repository.user.UserFirestoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
@@ -55,4 +57,10 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindCategoriesRepository(categoriesRepositoryImpl: CategoriesRepositoryImpl)
             : CategoriesRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideProductsRepository(
+        productsRepositoryImpl: ProductsRepositoryImpl
+    ): ProductsRepository
 }
