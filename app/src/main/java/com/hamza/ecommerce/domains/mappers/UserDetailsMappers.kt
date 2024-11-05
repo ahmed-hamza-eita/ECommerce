@@ -1,5 +1,6 @@
 package com.hamza.ecommerce.domains.mappers
 
+import com.hamza.ecommerce.data.models.user.CountryData
 import com.hamza.ecommerce.data.models.user.UserDetailsModel
 import com.hamza.ecommerce.data.models.user.UserDetailsPreferences
 
@@ -17,11 +18,12 @@ fun UserDetailsPreferences.toUserDetailsModel(): UserDetailsModel {
 }
 
 //convert Model to Preferences for using it in dataSource layer
-fun UserDetailsModel.toUserDetailsPreferences(): UserDetailsPreferences {
+fun UserDetailsModel.toUserDetailsPreferences(countryData: CountryData): UserDetailsPreferences {
     return UserDetailsPreferences.newBuilder()
         .setId(id)
         .setEmail(email)
         .setName(name)
         .addAllReviews(reviews?.toList() ?: emptyList())
+        .setCountry(countryData)
         .build()
 }

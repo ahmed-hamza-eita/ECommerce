@@ -12,9 +12,11 @@ import com.hamza.ecommerce.ui.auth.adapters.CountryClickListener
 import com.hamza.ecommerce.ui.auth.models.CountryUIModel
 import com.hamza.ecommerce.ui.auth.viewmodel.CountriesViewModel
 import com.hamza.ecommerce.utils.BaseBottomSheetFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CountriesFragment : BaseBottomSheetFragment<FragmentCountriesBinding, CountriesViewModel>(),
     CountryClickListener {
 

@@ -35,5 +35,6 @@
     <string name="off">off</string>
     <string name="flash_sale">Flash Sale</string>
     <string name="see_more">See More</string>
+    <string name="please_select_your_country">Please select your country</string>
 
 </resources>

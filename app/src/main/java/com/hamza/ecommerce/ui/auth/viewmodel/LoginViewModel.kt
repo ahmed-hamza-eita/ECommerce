@@ -1,19 +1,12 @@
 package com.hamza.ecommerce.ui.auth.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.models.Resource
 import com.hamza.ecommerce.data.models.user.UserDetailsModel
 import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepository
-import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
-import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
 import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
 import com.hamza.ecommerce.data.repository.user.UserPreferenceRepository
-import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
 import com.hamza.ecommerce.domains.mappers.toUserDetailsPreferences
 import com.hamza.ecommerce.utils.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,7 +77,12 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun savePreferenceData(userDetailsModel: UserDetailsModel) {
         appPreferencesRepository.saveLoginState(true)
-        userPreferencesRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences())
+        val country = userPreferencesRepository.getUserCountry().first()
+        userPreferencesRepository.updateUserDetails(
+            userDetailsModel.toUserDetailsPreferences(
+                country
+            )
+        )
     }
 
     fun signOut() {

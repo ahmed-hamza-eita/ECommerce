@@ -8,7 +8,7 @@ import com.hamza.ecommerce.ui.auth.models.CountryUIModel
 
 
 class CountriesAdapter(
-    private val countries: List<CountryUIModel>,
+    private val countries: List<CountryUIModel?>,
     private val countryClickListener: CountryClickListener
 ) : RecyclerView.Adapter<CountriesAdapter.CountryViewHolder>() {
 
@@ -31,7 +31,7 @@ class CountriesAdapter(
     }
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        holder.bind(countries[position])
+        holder.bind(countries[position]!!)
     }
 
     override fun getItemCount(): Int = countries.size

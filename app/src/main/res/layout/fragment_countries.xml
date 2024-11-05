@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -30,16 +31,17 @@
                 android:background="@color/neutral_grey" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TitleTextStyle"
+                style="@style/LargeTitleTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="16dp"
-                android:text="@string/select_country_msg" />
+                android:text="@string/please_select_your_country" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/countries_rv"
                 android:layout_width="match_parent"
+                tools:listitem="@layout/item_country_layout"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 

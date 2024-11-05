@@ -1,16 +1,11 @@
 package com.hamza.ecommerce.ui.auth.fragments;
 
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.viewbinding.ViewBinding
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -22,25 +17,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hamza.ecommerce.R
-import com.hamza.ecommerce.data.datasource.datastore.AppPreferencesDataSource
 import com.hamza.ecommerce.data.models.Resource
-import com.hamza.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
-import com.hamza.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
-import com.hamza.ecommerce.data.repository.common.AppPreferenceRepository
-import com.hamza.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
 import com.hamza.ecommerce.databinding.FragmentLoginBinding
 import com.hamza.ecommerce.ui.auth.getGoogleRequestIntent
 import com.hamza.ecommerce.ui.auth.viewmodel.LoginViewModel
-import com.hamza.ecommerce.ui.common.customviews.ProgressDialog
 import com.hamza.ecommerce.ui.home.MainActivity
 import com.hamza.ecommerce.utils.BaseFragment
 import com.hamza.ecommerce.utils.CrashlyticsUtils
-import com.hamza.ecommerce.utils.CrashlyticsUtils.CUSTOM_KEY
 import com.hamza.ecommerce.utils.LoginException
 import com.hamza.ecommerce.utils.showSnakeBarError
 import com.hamza.ecommerce.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -59,6 +46,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun init() {
         initListeners()
         initViewModel()
+        chooseYourCountry()
+    }
+
+    private fun chooseYourCountry() {
+        val countryFragment = CountriesFragment()
+        countryFragment.isCancelable = false
+        countryFragment.show(parentFragmentManager, "country-fragment")
     }
 
     private fun initListeners() {
