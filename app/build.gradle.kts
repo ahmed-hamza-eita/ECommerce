@@ -146,6 +146,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 
 }
 // Setup protobuf configuration, generating lite Java and Kotlin classes
