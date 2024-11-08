@@ -175,32 +175,42 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/flash_sale_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp">
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:tag="flash_sale_layout"
+                    android:visibilities="@{viewmodel.isEmptyFlashSale}">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txt_flash_sale"
                         style="@style/MediumTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="start"
                         android:text="@string/flash_sale"
                         android:textColor="@color/neutral_dark" />
 
                     <TextView
-                        android:id="@+id/txt_see_more"
+                        android:id="@+id/flash_see_more_tv"
                         style="@style/MediumTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/see_more"
-                        android:textColor="@color/primary_color"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="16sp" />
                 </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/flash_sale_products_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingStart="8dp"
+                    android:tag="flash_sale_rv"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
 
