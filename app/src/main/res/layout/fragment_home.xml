@@ -194,12 +194,7 @@
                         android:text="@string/flash_sale"
                         android:textColor="@color/neutral_dark" />
 
-                    <TextView
-                        android:id="@+id/flash_see_more_tv"
-                        style="@style/MediumTextStyle"
-                        android:layout_gravity="center"
-                        android:text="@string/see_more"
-                        android:textSize="16sp" />
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -209,8 +204,7 @@
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
                     android:tag="flash_sale_rv"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    tools:ignore="RtlSymmetry" />
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </LinearLayout>
 
 

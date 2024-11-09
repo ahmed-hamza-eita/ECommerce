@@ -19,8 +19,10 @@ import com.hamza.ecommerce.ui.home.adapters.SalesAdAdapter
 import com.hamza.ecommerce.ui.home.models.CategoryUIModel
 import com.hamza.ecommerce.ui.home.models.SalesAdUIModel
 import com.hamza.ecommerce.ui.home.viewmodel.HomeViewModel
+import com.hamza.ecommerce.ui.products.adapters.ProductAdapter
 import com.hamza.ecommerce.utils.BaseFragment
 import com.hamza.ecommerce.utils.DepthPageTransformer
+import com.hamza.ecommerce.utils.HorizontalSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -34,23 +36,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
 
     override val viewModel: HomeViewModel by viewModels()
-
+    private val flashSaleAdapter by lazy { ProductAdapter() }
     override fun getLayoutResId(): Int = R.layout.fragment_home
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
+
+    override fun init() {
+        initListeners()
+        initViewModel()
 
     }
 
-    override fun init() {
-        //  initListeners()
-        initViewModel()
+    private fun initListeners() {
+        binding.flashSaleProductsRv.apply {
+            adapter = flashSaleAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+            addItemDecoration(HorizontalSpaceItemDecoration(16))
+        }
+
 
     }
 
     private fun initViewModel() {
         salesAdObserver()
         categoriesObserver()
+        flashSaleObserver()
+
+
     }
 
     private fun salesAdObserver() {
@@ -89,6 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     is Resource.Loading -> {
                         Log.d(TAG, "iniViewModel: categories Loading")
                     }
+
                     is Resource.Success -> {
                         binding.categoriesShimmerView.root.apply {
                             stopShimmer()
@@ -97,13 +111,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                         Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
                         initCategoriesView(resources.data)
                     }
+
                     is Resource.Error -> {
-                        Log.d(TAG, "iniViewModel: categories Error: ${resources.exception?.message}")
+                        Log.d(
+                            TAG,
+                            "iniViewModel: categories Error: ${resources.exception?.message}"
+                        )
                     }
                 }
             }
         }
     }
+
+
+    private fun flashSaleObserver() {
+        lifecycleScope.launch {
+            viewModel.flashSaleState.collect { productsList ->
+                flashSaleAdapter.submitList(productsList)
+                binding.invalidateAll()
+            }
+        }
+    }
+
+
     private fun initCategoriesView(data: List<CategoryUIModel>?) {
         if (data.isNullOrEmpty()) {
             return

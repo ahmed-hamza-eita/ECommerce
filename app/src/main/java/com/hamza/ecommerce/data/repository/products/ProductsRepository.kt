@@ -9,11 +9,8 @@ import kotlinx.coroutines.flow.Flow
 interface ProductsRepository {
     fun getCategoryProducts(categoryID: String, pageLimit: Int): Flow<List<ProductModel>>
 
-
     fun getSaleProducts(
-        categoryID: String,
-        saleType: String,
-        pageLimit: Int
+        countryID: String, saleType: String, pageLimit: Int
     ): Flow<List<ProductModel>>
 
     suspend fun getAllProductsPaging(

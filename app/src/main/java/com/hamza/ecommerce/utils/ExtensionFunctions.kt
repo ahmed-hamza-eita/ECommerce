@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
@@ -37,6 +38,7 @@ fun Fragment.showDialog(title: String, message: String) {
             dialog?.dismiss() // Only dismiss the dialog, not the fragment
         }.create().show()
 }
+
 fun BottomSheetDialogFragment.showDialog(title: String, message: String) {
     MaterialAlertDialogBuilder(requireActivity())
         .setTitle(title)
@@ -85,5 +87,10 @@ fun String.isValidEmail(): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
+
+@BindingAdapter("android:visibilities")
+fun setVisibility(view: View, isEmpty: Boolean) {
+    view.visibility = if (isEmpty) View.GONE else View.VISIBLE
+}
 
 

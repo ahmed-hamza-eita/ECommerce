@@ -60,14 +60,22 @@ class HomeViewModel @Inject constructor(
 
     val isEmptyMegaSale = megaSaleState.map { it.isEmpty() }.asLiveData()
 
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun getProductsSales(productSaleType: ProductSaleType): StateFlow<List<ProductUIModel>> =
         countryState.mapLatest {
-            Log.d(TAG, "Countryid for flah sale: ${it.id}")
+            Log.d(TAG, "CountryId for flash sale: ${it.id}")
             productsRepository.getSaleProducts(it.id ?: "0", productSaleType.type, 10)
         }.mapLatest { it.first().map { getProductModel(it) } }.stateIn(
             viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList()
         )
+
+    private fun getProductModel(product: ProductModel): ProductUIModel {
+        val productUIModel = product.toProductUIModel().copy(
+            currencySymbol = countryState.value?.currencySymbol ?: ""
+        )
+        return productUIModel
+    }
 
     fun stopTimer() {
         salesAdsState.value.data?.forEach {
@@ -81,12 +89,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getProductModel(product: ProductModel): ProductUIModel {
-        val productUIModel = product.toProductUIModel().copy(
-            currencySymbol = countryState.value?.currencySymbol ?: ""
-        )
-        return productUIModel
-    }
 
     companion object {
         private const val TAG = "HomeViewModel"

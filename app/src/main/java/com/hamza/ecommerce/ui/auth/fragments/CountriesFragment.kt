@@ -1,6 +1,7 @@
 package com.hamza.ecommerce.ui.auth.fragments;
 
 
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -9,6 +10,7 @@ import com.hamza.ecommerce.R
 import com.hamza.ecommerce.databinding.FragmentCountriesBinding
 import com.hamza.ecommerce.ui.auth.adapters.CountriesAdapter
 import com.hamza.ecommerce.ui.auth.adapters.CountryClickListener
+import com.hamza.ecommerce.ui.auth.fragments.LoginFragment.Companion
 import com.hamza.ecommerce.ui.auth.models.CountryUIModel
 import com.hamza.ecommerce.ui.auth.viewmodel.CountriesViewModel
 import com.hamza.ecommerce.utils.BaseBottomSheetFragment
@@ -50,10 +52,12 @@ class CountriesFragment : BaseBottomSheetFragment<FragmentCountriesBinding, Coun
     override fun onCountryClicked(country: CountryUIModel) {
         viewModel.saveUserCountry(country)
         dismiss()
+        Log.d(TAG, "countryId: ${country.id}")
+
     }
 
     companion object {
-        private const val TAG = "RegisterFragment"
+        private const val TAG = "CountriesFragment"
 
     }
 }

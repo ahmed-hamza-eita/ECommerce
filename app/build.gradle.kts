@@ -104,6 +104,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.play.services.auth)
+ 
 
     //glide
     implementation(libs.github.glide)
@@ -146,7 +147,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
 }
 // Setup protobuf configuration, generating lite Java and Kotlin classes
